@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://ernestarmani.github.io/Ernesto.Armani/sitemap.xml

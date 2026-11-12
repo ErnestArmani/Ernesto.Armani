@@ -155,6 +155,40 @@ footer { padding: 32px 0 48px; border-top: 1px solid #25332e; font-size: 14px; o
 .lb .prev { left: 12px; top: 50%; }
 .lb .next { right: 12px; top: 50%; }
 
+
+/* Booking calendar */
+.book { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 28px; align-items: start; }
+.cal { background: var(--pine); border-radius: 16px; padding: 18px; }
+.cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.cal-head b { font-size: 18px; text-transform: capitalize; }
+.cal-head button { background: rgba(236, 230, 216, .1); color: var(--birch); border: 0; border-radius: 10px; width: 44px; height: 44px; font-size: 20px; cursor: pointer; }
+.cal-head button:disabled { opacity: .3; cursor: default; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.cal-grid .dw { text-align: center; font-size: 12px; opacity: .6; padding: 4px 0; }
+.day { aspect-ratio: 1; border: 0; border-radius: 10px; background: rgba(236, 230, 216, .06); color: var(--birch); font: inherit; font-size: 15px; font-variant-numeric: tabular-nums; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.1; }
+.day small { font-size: 9px; opacity: .7; }
+.day.we { color: #f5b48f; }
+.day:disabled { cursor: default; background: transparent; opacity: .28; text-decoration: line-through; }
+.day.pad { visibility: hidden; }
+.day.in, .day.out { background: var(--ember); color: #1a0e07; opacity: 1; text-decoration: none; }
+.day.mid { background: rgba(240, 119, 58, .28); }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 12px; font-size: 13px; opacity: .8; }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.form { display: grid; gap: 12px; }
+.form label { display: grid; gap: 6px; font-size: 14px; }
+.form input, .form textarea, .form select { font: inherit; color: var(--birch); background: var(--night); border: 1px solid #34463f; border-radius: 10px; padding: 12px 14px; }
+.form input:focus, .form textarea:focus, .form select:focus { outline: 2px solid var(--steam); border-color: transparent; }
+.sum { background: var(--pine); border-radius: 14px; padding: 16px 18px; display: grid; gap: 4px; }
+.sum .big { font-family: var(--font-display); font-size: 26px; color: var(--ember); font-variant-numeric: tabular-nums; }
+.msg { border-radius: 10px; padding: 12px 14px; font-size: 15px; }
+.msg.err { background: rgba(229, 72, 77, .15); border-left: 3px solid #e5484d; }
+.msg.ok { background: rgba(62, 201, 107, .14); border-left: 3px solid #3ec96b; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.faq details { background: var(--pine); border-radius: 12px; padding: 16px 18px; }
+.faq summary { cursor: pointer; font-weight: 700; }
+.faq p { margin-top: 8px; opacity: .85; }
+.faq { display: grid; gap: 10px; max-width: 760px; }
+@media (max-width: 800px) { .book { grid-template-columns: 1fr; } }
 @media (max-width: 800px) { .hero .wrap { grid-template-columns: 1fr; gap: 28px; } .hero figure { order: -1; } .hero figure img { aspect-ratio: 4 / 3; } }
 @media (max-width: 520px) { nav { gap: 14px; font-size: 14px; } .gallery { grid-template-columns: repeat(2, 1fr); } }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .shot img { transition: none; } }
@@ -166,6 +200,7 @@ footer { padding: 32px 0 48px; border-top: 1px solid #25332e; font-size: 14px; o
   <div class="wrap">
     <a class="logo" href="#top">ERNESTO <span>ARMANI</span></a>
     <nav aria-label="Разделы сайта">
+      <a href="#daty">Даты</a>
       <a href="#ceny">Цены</a>
       <a href="#dom">Дом</a>
       <a href="#pravila">Правила</a>
@@ -193,7 +228,8 @@ footer { padding: 32px 0 48px; border-top: 1px solid #25332e; font-size: 14px; o
           <li>До 6 гостей</li>
         </ul>
         <div class="cta">
-          <a class="btn wa" href="https://wa.me/79929992998" rel="noopener">Написать в WhatsApp</a>
+          <a class="btn" href="#daty">Свободные даты</a>
+          <a class="btn wa" href="https://wa.me/79929992998" rel="noopener">WhatsApp</a>
           <a class="btn tg" href="https://t.me/ernest_gri" rel="noopener">Telegram</a>
           <a class="btn ghost" href="#foto">Смотреть фото</a>
         </div>
@@ -203,6 +239,51 @@ footer { padding: 32px 0 48px; border-top: 1px solid #25332e; font-size: 14px; o
       </figure>
     </div>
   </div>
+
+  <section id="daty" class="alt">
+    <div class="wrap">
+      <h2>Свободные даты и бронь</h2>
+      <p class="sub">Календарь показывает занятость со всех площадок. Выберите день заезда, потом день выезда, и оставьте заявку. Я подтвержу её в WhatsApp или по телефону.</p>
+      <div class="book">
+        <div>
+          <div class="cal" aria-live="polite">
+            <div class="cal-head">
+              <button type="button" id="calPrev" aria-label="Предыдущий месяц">‹</button>
+              <b id="calTitle">Загружаю…</b>
+              <button type="button" id="calNext" aria-label="Следующий месяц">›</button>
+            </div>
+            <div class="cal-grid" id="calGrid"></div>
+            <div class="legend">
+              <span><i style="background:rgba(236,230,216,.18)"></i>Свободно</span>
+              <span><i style="background:var(--ember)"></i>Ваши даты</span>
+              <span><i style="background:transparent;border:1px solid #4a5f57"></i>Занято</span>
+              <span style="color:#f5b48f">Пт и Сб: ночь 17 900 ₽, остальные 15 900 ₽</span>
+            </div>
+          </div>
+          <p class="msg err" id="calErr" hidden style="margin-top:12px">Не получилось загрузить календарь. Оставьте заявку ниже или напишите в WhatsApp, я назову свободные даты.</p>
+        </div>
+        <form class="form" id="bookForm" novalidate>
+          <div class="sum" id="sumBox">
+            <span id="sumDates">Выберите даты в календаре</span>
+            <span class="big" id="sumPrice">—</span>
+            <small id="sumNote" style="opacity:.75">Баня-бочка и банный чан включены.</small>
+          </div>
+          <label for="fGuests">Гостей
+            <select id="fGuests" name="g">
+              <option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option>
+            </select>
+          </label>
+          <label for="fName">Имя<input id="fName" name="nm" autocomplete="name" required maxlength="60"></label>
+          <label for="fPhone">Телефон<input id="fPhone" name="ph" type="tel" autocomplete="tel" inputmode="tel" placeholder="+7 999 123-45-67" required maxlength="30"></label>
+          <label for="fMsg">Пожелания (необязательно)<textarea id="fMsg" name="msg" rows="3" maxlength="500" placeholder="Например: цитрус в чан, день рождения, приедем к 17:00"></textarea></label>
+          <label class="hp" for="fHp" aria-hidden="true">Не заполняйте<input id="fHp" name="hp" tabindex="-1" autocomplete="off"></label>
+          <button class="btn" type="submit" id="fSend">Отправить заявку</button>
+          <p class="msg" id="fRes" hidden></p>
+          <small style="opacity:.7">Заявка ни к чему не обязывает. Отправляя её, вы соглашаетесь, что я свяжусь с вами по указанному телефону.</small>
+        </form>
+      </div>
+    </div>
+  </section>
 
   <section id="ceny">
     <div class="wrap">
@@ -375,7 +456,17 @@ footer { padding: 32px 0 48px; border-top: 1px solid #25332e; font-size: 14px; o
         <li><strong>Это гостевой дом.</strong> Я живу на этом же участке и помогу с любым вопросом.</li>
         <li><strong>Мангал.</strong> Уголь, розжиг и спички привозите с собой.</li>
         <li><strong>До 6 гостей.</strong> Цитрус, травы и мангал оплачиваются отдельно по тарифам выше.</li>
+        <li><strong>Заезд с 15:00, выезд до 12:00.</strong></li>
       </ul>
+      <h3 class="group-title" style="margin-top:48px">Частые вопросы</h3>
+      <div class="faq">
+        <details><summary>Что входит в цену?</summary><p>Проживание в доме 84 м² целиком, баня-бочка и Сибирский банный чан. Отдельно оплачиваются только цитрус и травы в чан и мангал.</p></details>
+        <details><summary>Во сколько заезд и выезд?</summary><p>Заезд с 15:00, выезд до 12:00. Если нужно другое время, напишите, постараюсь подстроиться.</p></details>
+        <details><summary>Сколько человек можно?</summary><p>До 6 гостей. Спальные места: двуспальная кровать и два раскладных двуспальных дивана.</p></details>
+        <details><summary>Как подтверждается бронь?</summary><p>Вы оставляете заявку на сайте или пишете в WhatsApp и Telegram. Я проверяю даты и подтверждаю бронь сообщением.</p></details>
+        <details><summary>Можно устроить праздник?</summary><p>День рождения в спокойной обстановке можно. Шумные вечеринки запрещены, музыка на улице до 21:00.</p></details>
+      </div>
+
     </div>
   </section>
 
@@ -527,6 +618,100 @@ footer { padding: 32px 0 48px; border-top: 1px solid #25332e; font-size: 14px; o
     if (e.key === 'Escape') close();
     if (e.key === 'ArrowLeft') show(cur - 1);
     if (e.key === 'ArrowRight') show(cur + 1);
+  });
+})();
+</script>
+
+<script>
+(function () {
+  var API = 'https://bnhbmujhsvmfyniwdtyj.supabase.co/functions/v1/site';
+  var W = '0bcbeb6f8c634a759edb4d21850cabd8';
+  var WA = '79929992998';
+  var MN = ['январь','февраль','март','апрель','май','июнь','июль','август','сентябрь','октябрь','ноябрь','декабрь'];
+  var MG = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+  var st = { today: '', busy: [], wk: 15900, we: 17900, max: 6, ok: false, y: 0, m: 0, a: '', b: '' };
+  function $(id) { return document.getElementById(id); }
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function iso(y, m, d) { return y + '-' + pad(m + 1) + '-' + pad(d); }
+  function add(s, n) { var d = new Date(s + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); }
+  function dw(s) { return new Date(s + 'T12:00:00Z').getUTCDay(); }
+  function nights(a, b) { return Math.round((new Date(b + 'T12:00:00Z') - new Date(a + 'T12:00:00Z')) / 864e5); }
+  function label(s) { var d = new Date(s + 'T12:00:00Z'); return d.getUTCDate() + ' ' + MG[d.getUTCMonth()]; }
+  function rub(n) { return Math.round(n).toLocaleString('ru-RU') + ' ₽'; }
+  function nightBusy(s) { for (var i = 0; i < st.busy.length; i++) if (s >= st.busy[i].s && s < st.busy[i].e) return true; return false; }
+  function rangeFree(a, b) { for (var s = a; s < b; s = add(s, 1)) if (nightBusy(s)) return false; return true; }
+  function price(a, n) { var t = 0; for (var i = 0; i < n; i++) { var d = dw(add(a, i)); t += (d === 5 || d === 6) ? st.we : st.wk; } return t; }
+  function nightWord(n) { var a = n % 10, b = n % 100; return a === 1 && b !== 11 ? 'ночь' : (a >= 2 && a <= 4 && (b < 10 || b >= 20) ? 'ночи' : 'ночей'); }
+
+  function render() {
+    var y = st.y, m = st.m, grid = $('calGrid');
+    $('calTitle').textContent = MN[m] + ' ' + y;
+    var t0 = st.today.split('-');
+    $('calPrev').disabled = (y < +t0[0] || (y === +t0[0] && m <= +t0[1] - 1));
+    var html = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].map(function (x) { return '<div class="dw">' + x + '</div>'; }).join('');
+    var first = (new Date(Date.UTC(y, m, 1)).getUTCDay() + 6) % 7, days = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
+    for (var i = 0; i < first; i++) html += '<button class="day pad" type="button" tabindex="-1" aria-hidden="true"></button>';
+    for (var d = 1; d <= days; d++) {
+      var s = iso(y, m, d), cls = 'day', dis = false, w = dw(s);
+      if (w === 5 || w === 6) cls += ' we';
+      if (s < st.today) dis = true;
+      else if (st.a && !st.b && s > st.a) dis = !rangeFree(st.a, s);
+      else dis = nightBusy(s);
+      if (st.a && s === st.a) cls += ' in';
+      if (st.b && s === st.b) { cls += ' out'; dis = false; }
+      if (st.a && st.b && s > st.a && s < st.b) cls += ' mid';
+      html += '<button class="' + cls + '" type="button" data-d="' + s + '"' + (dis ? ' disabled' : '') + ' aria-label="' + label(s) + (dis ? ', занято' : '') + '">' + d + '</button>';
+    }
+    grid.innerHTML = html;
+    grid.querySelectorAll('button[data-d]').forEach(function (b) { b.onclick = function () { pick(b.getAttribute('data-d')); }; });
+    summary();
+  }
+  function pick(s) {
+    if (!st.a || st.b || s <= st.a) { st.a = s; st.b = ''; }
+    else if (rangeFree(st.a, s)) st.b = s;
+    render();
+  }
+  function summary() {
+    if (st.a && st.b) {
+      var n = nights(st.a, st.b);
+      $('sumDates').textContent = label(st.a) + ' – ' + label(st.b) + ', ' + n + ' ' + nightWord(n);
+      $('sumPrice').textContent = rub(price(st.a, n));
+    } else if (st.a) { $('sumDates').textContent = 'Заезд ' + label(st.a) + '. Теперь выберите день выезда'; $('sumPrice').textContent = '—'; }
+    else { $('sumDates').textContent = 'Выберите даты в календаре'; $('sumPrice').textContent = '—'; }
+  }
+  function move(k) { st.m += k; if (st.m < 0) { st.m = 11; st.y--; } if (st.m > 11) { st.m = 0; st.y++; } render(); }
+  $('calPrev').onclick = function () { move(-1); };
+  $('calNext').onclick = function () { move(1); };
+
+  function start(today) { st.today = today; var t = today.split('-'); st.y = +t[0]; st.m = +t[1] - 1; render(); }
+  fetch(API + '?w=' + W).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (j) {
+    st.busy = j.busy || []; st.wk = j.wk || st.wk; st.we = j.we || st.we; st.max = j.max || st.max; st.ok = true; start(j.today);
+  }).catch(function () {
+    $('calErr').hidden = false;
+    var n = new Date(); start(n.getFullYear() + '-' + pad(n.getMonth() + 1) + '-' + pad(n.getDate()));
+  });
+
+  function waLink() {
+    var t = 'Здравствуйте! Хочу забронировать дом' + (st.a && st.b ? ' с ' + label(st.a) + ' по ' + label(st.b) : '') + ', гостей: ' + $('fGuests').value + '. ' + ($('fName').value ? 'Меня зовут ' + $('fName').value + '. ' : '') + $('fMsg').value;
+    return 'https://wa.me/' + WA + '?text=' + encodeURIComponent(t.trim());
+  }
+  function show(ok, html) { var r = $('fRes'); r.hidden = false; r.className = 'msg ' + (ok ? 'ok' : 'err'); r.innerHTML = html; }
+  $('bookForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!st.a || !st.b) return show(false, 'Выберите в календаре день заезда и день выезда.');
+    if ($('fName').value.trim().length < 2) return show(false, 'Укажите имя.');
+    if ($('fPhone').value.replace(/\D/g, '').length < 10) return show(false, 'Укажите телефон полностью, например +7 999 123-45-67.');
+    var btn = $('fSend'); btn.disabled = true; btn.textContent = 'Отправляю…';
+    fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({
+      w: W, s: st.a, n: nights(st.a, st.b), g: +$('fGuests').value, nm: $('fName').value, ph: $('fPhone').value, msg: $('fMsg').value, hp: $('fHp').value
+    }) }).then(function (r) { return r.json().then(function (j) { return { r: r, j: j }; }); }).then(function (x) {
+      if (x.r.ok && x.j.ok) {
+        show(true, 'Заявка отправлена. Я свяжусь с вами в ближайшее время по номеру ' + $('fPhone').value.replace(/</g, '') + '.');
+        $('bookForm').reset(); st.a = st.b = ''; render();
+      } else show(false, (x.j && x.j.error ? x.j.error : 'Не получилось отправить.') + ' <a href="' + waLink() + '" rel="noopener">Написать в WhatsApp</a>');
+    }).catch(function () {
+      show(false, 'Не получилось отправить заявку. <a href="' + waLink() + '" rel="noopener">Отправить её в WhatsApp</a>');
+    }).then(function () { btn.disabled = false; btn.textContent = 'Отправить заявку'; });
   });
 })();
 </script>
